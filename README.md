@@ -47,7 +47,7 @@ Primero se describen los controles del juego.
 
 ### INTEFAZ DEL JUEGO
 
-![1.png](WIKI%20COMO%20JUGAR%20CITY%20SKYLINES%20Y%20SOBREVIVIR%20EN%20EL%20I%20d833a3f2544745b0b6e967a779eeff5a/1.png)
+![interfaz_usuario](images/intefaz_usuario.png)
 
 1. **Areas**: permite alternar entre la vista de áreas y vistas del juego. 
 2. **Milestones (Metas)**: permite ver los requisitos para desbloquear el siguiente nivel de la ciudad. Permite navegar hacia atrás y adelante con los íconos de flechas al lado de la barra de progreso. 
