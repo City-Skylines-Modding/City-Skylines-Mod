@@ -130,7 +130,7 @@ En este momento, cuando compilas tu mod, la DLL se colocará en la carpeta de tu
    mkdir "%LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)"
 
    del "%LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)\$(TargetFileName)"
-   
+
    xcopy /y "$(TargetPath)" "%LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)"
    ```
 
@@ -152,4 +152,4 @@ Al cambiar esto, la versión del ensamblado será diferente cada vez que compile
 
 ### COMPILAR EL PROYECTO
 
-Para compilar el proyecto, usa el comando de `**CTRL + SHIFT + B`. En caso de no haber hecho el paso “Automatizando el proceso”,\*\* guarda el archivo .dll en la carpeta de mods creada anteriormente.
+Para compilar el proyecto, usa el comando de `CTRL + SHIFT + B`. En caso de no haber hecho el paso “Automatizando el proceso”,\*\* guarda el archivo .dll en la carpeta de mods creada anteriormente.
