@@ -38,7 +38,7 @@ namespace ModName
 	public class ModName : IUserMod
 	{
 		public string Name { get { return "Mod Name"; }}
-		public string Description { get { return "Mod Description ..."; }}}
+		public string Description { get { return "Mod Description ..."; }}
 	}
 }
 ```
