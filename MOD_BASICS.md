@@ -9,11 +9,7 @@ Existen dos tipos de mods disponibles para el juego de City SKylines. EL primero
 
 # ESTRUCTURA DEL FOLDER DE CITY SKYLINES (DIRECTORIO)
 
-La mayor parte de los archivos necesarios se encuentran en
-
-```csharp
-%LOCALAPPDATA%\Colossal Order\Cities_Skylines
-```
+## Steam
 
 Con STEAM y su funcionalidad de workshop, permite descargar mods creados por la comudidad y los almacena en la siguiente carpeta
 
@@ -21,23 +17,45 @@ Con STEAM y su funcionalidad de workshop, permite descargar mods creados por la 
 <%STEAM%>\steamapps\workshop\content\255710
 ```
 
-También, podemos encontrar los mods preinstalados de fábrica en la siguiente carpeta
+Los mods preinstalados de fabrica y creados se almacenan en la siguiente carpeta
 
 ```csharp
 <%STEAM%>\steamapps\common\Cities_Skylines\Files\Mods
 ```
 
-Por último, este folder contiene todos los assemblies necesarios para desarrollar mods.
+Por último, este folder contiene todos los assemblies necesarios para utilizar los APIs de Unity y de City Skylines.
 
 ```csharp
 <%STEAM%>\steamapps\common\Cities_Skylines\Cities_Data\Managed
 ```
 
+## Epic Games Store
+
+Los archivos del juego son almacenados en la siguiente carpeta
+
+```csharp
+Epic\CitiesSkylines
+```
+
+Los mods preinstalados de fabrica y creados se almacenan en la siguiente carpeta
+
+```csharp
+Epic\CitiesSkylines\Files\Mods
+```
+
+Por último, este folder contiene todos los assemblies necesarios para utilizar los APIs de Unity y de City Skylines.
+
 ## ESTRUCTURA DE LOS SUBFOLDERES DE CITY SKYLINES
+
+### Steam Folder Structure
 
 ![folder_structure](images/folder_structure.png)
 
-- **ADDONS**
+### Epic Folder Structure
+
+![folder_structure](images/Epic%20Files.png)
+
+- **ADDONS**: para steam, la carpeta de Addons se descompone de la siguiente manera
   ![add_ong](images/add_ons.png)
   - **ASSETS**: contiene todos los assets guardados del editor de assets
   - **COLORCORRECTIONS**: permiten definir tablas de búsqueda de correcciones de color personalizas.
@@ -68,16 +86,26 @@ Por último, este folder contiene todos los assemblies necesarios para desarroll
 
 # SETUP
 
+## Steam
+
 Para empezar a modificar el juego, primero se necesita crear una carpeta llamada mods dentro de addons.
 
 ```csharp
 %LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods
 ```
 
-Dentro de esta carpeta, se deben crear más carpetas para almacenar cada mod que se desee crear.
+## Epic Games Store
+
+Para empezar a modificar el juego, primero se necesita crear una carpeta llamada mods dentro de files.
 
 ```csharp
-/Mods/YourModName/Source/YourModName.cs
+Epic\CitiesSkylines\Files\Mods
+```
+
+Para ambos en esta carpeta, se deben crear más carpetas para almacenar cada mod que se desee crear.
+
+```csharp
+\Mods\YourModName\Source\YourModName.cs
 ```
 
 ## UTILIZANDO VISUAL STUDIO PARA MODIFICAR LOS ARCHIVOS
@@ -90,7 +118,11 @@ Podemos encontrar el instalador de Visual Studio Community en la página de Micr
 
 [Descargar Visual Studio Tools: instalación gratuita para Windows, Mac, Linux](https://visualstudio.microsoft.com/es/downloads/)
 
-### PASOS PARA INSTALAR LOS COMPONENTES DE UNITY EN VISUAL STUDIO IDE
+## API de Unity
+
+Para acceder al API de Unity, es necesario tener instalado la aplicación de Unity Hub.
+
+## PASOS PARA INSTALAR LOS COMPONENTES DE UNITY EN VISUAL STUDIO IDE
 
 1. Abre Visual Studio.
 2. En la ventana de instalación, navega hasta la categoría de Gaming (2) y dale click a la que dice “Game Development with Unity”.
@@ -150,6 +182,6 @@ Al cambiar esto, la versión del ensamblado será diferente cada vez que compile
 
 </aside>
 
-### COMPILAR EL PROYECTO
+## COMPILAR EL PROYECTO
 
 Para compilar el proyecto, usa el comando de `CTRL + SHIFT + B`. En caso de no haber hecho el paso “Automatizando el proceso”,\*\* guarda el archivo .dll en la carpeta de mods creada anteriormente.
