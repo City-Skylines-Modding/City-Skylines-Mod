@@ -1,4 +1,8 @@
 # ignoring video files
 .mp4
 
+# private folder with PDFs
 Entregas/
+
+# visual studio files
+.vs/
