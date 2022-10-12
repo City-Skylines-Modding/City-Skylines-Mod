@@ -47,24 +47,6 @@ namespace ModName
 
 Para los mods básicos, solo se estarán implementando interfaces y extendiendo las clases bases del juego. Este nuevo código puede ser añadido a el main file o un nuevo archivo.
 
-```csharp
-public class UnlimitedOilAndOreResource : ResourceExtensionBase
-{
-	public override void OnAfterResourcesModified(int x, int z,
-																											NaturalResource type,
-																											int amount)
-	{
-		if ((type == NaturalResource.Oil || type == NaturalResource.Ore)
-			&& amount < 0)
-		{
-			resourceManager.SetResource(x, z, type,
-				(byte)(resourceManager.GetResource(x, z, type) - amount),
-				false);
-		}
-	}
-}
-```
-
 ## ADVANCED MODS
 
 Se utiliza ingeniería inversa del código en C# para descubrir exactamente que es lo que se puede hacer. También se puede usar la técnica de reflection para ir aún más lejos, pero con un grado de dificultad mayor.
