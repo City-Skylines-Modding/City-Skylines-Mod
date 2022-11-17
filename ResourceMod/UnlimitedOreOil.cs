@@ -24,17 +24,17 @@ namespace ResourceMod
         // Mod Description
         public string Description
         {
-            get { return "Provides the player with unlimited Ore and Oil resouce.";  }
+            get { return "Starts the game with unlimited resources.";  }
         }
 
         /**
          * @brief
          * Modifies the base game resources providing with unlimited Ore and Oil
          * to the player. 
-         * @param x
+         * @param x 
          * @param z             
-         * @param type          Enumeration of the resource in the industries expansion
-         * @param amount        Ore amount
+         * @param type Enumeration of the resource in the industries expansion
+         * @param amount Ore amount
          */
         public override void OnAfterResourcesModified(int x, int z, 
             NaturalResource type, int amount)
