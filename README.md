@@ -1,10 +1,10 @@
-# Unlock All
+# Unlock All Tiles
 
-Unlocks all milestones in CitySkylines allowing the player access to al buildings types.
+Unlocks all land tiles.
 
 ## Overview
 
-This mod is an extension to MilestonesExtensionBase.
+This mod is an extension to AreasExtensionBase.
 
 ### Installing the Mod
 
