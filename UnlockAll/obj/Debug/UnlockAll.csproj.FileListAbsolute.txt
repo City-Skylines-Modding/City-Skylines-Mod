@@ -1,0 +1,11 @@
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\UnlockAll.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\UnlockAll.pdb
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\ColossalManaged.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\ICities.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\UnityEngine.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\obj\Debug\UnlockAll.csproj.AssemblyReference.cache
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\obj\Debug\UnlockAll.csproj.CoreCompileInputs.cache
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\obj\Debug\UnlockAll.csproj.CopyComplete
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\obj\Debug\UnlockAll.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlockAll\obj\Debug\UnlockAll.pdb
