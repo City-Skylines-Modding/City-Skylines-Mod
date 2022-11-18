@@ -1,11 +1,10 @@
-# Unlimited Oil and Resource Mod
+# Unlimited Money
 
-Provides the player with unlimited resources when starting the game.
+Provides the player with infinite money.
 
 ## Overview
 
-This mod is an extension to the ResourceExtensionBase class and overrides the default
-behaviour of this class.
+This mod is an extension to the EconomyExtensionBase class.
 
 ### Installing the Mod
 
