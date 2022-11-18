@@ -1,0 +1,9 @@
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\bin\Debug\UnlimitedOilandOre.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\bin\Debug\UnlimitedOilandOre.pdb
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\bin\Debug\ICities.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\bin\Debug\UnityEngine.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\obj\Debug\UnlimitedOilandOre.csproj.AssemblyReference.cache
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\obj\Debug\UnlimitedOilandOre.csproj.CoreCompileInputs.cache
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\obj\Debug\UnlimitedOilandOre.csproj.CopyComplete
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\obj\Debug\UnlimitedOilandOre.dll
+C:\Users\carlo\source\repos\CitySkylines Mod\UnlimitedOilandOre\obj\Debug\UnlimitedOilandOre.pdb
