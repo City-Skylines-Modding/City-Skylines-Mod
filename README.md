@@ -1,10 +1,10 @@
-# Unlimited Money
+# Unlock All
 
-Provides the player with infinite money.
+Unlocks all milestones in CitySkylines.
 
 ## Overview
 
-This mod is an extension to the EconomyExtensionBase class.
+This mod is an extension to MilestonesExtensionBase.
 
 ### Installing the Mod
 
