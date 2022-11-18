@@ -1,6 +1,6 @@
 # Unlock All
 
-Unlocks all milestones in CitySkylines.
+Unlocks all milestones in CitySkylines allowing the player access to al buildings types.
 
 ## Overview
 
