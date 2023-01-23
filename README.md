@@ -4,8 +4,7 @@ Permite que el jugador tenga recursos de gasolina y minerales infinitos.
 La función del mod es para que el jugador pueda desarrollar su ciudad
 sin tener que considerar los espacios de recursos naturales en el mapa y que
 tenga un flujo continuo de estos.
-
-Los archivos en este repositorio son el Source Code del mod. 
+ 
 
 ## Screenshots
 
