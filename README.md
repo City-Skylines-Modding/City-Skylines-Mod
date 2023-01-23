@@ -10,7 +10,7 @@ partida.
 Para instalar el mod, descargar el archivo .dll en la carpeta de 
 
 ```{bash}
-bin\Debug\UnlockAll.dll
+bin\Debug\UnlockTiles.dll
 ```
 
 ### Steam
