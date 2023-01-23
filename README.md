@@ -7,6 +7,9 @@ tenga un flujo continuo de estos.
 
 Los archivos en este repositorio son el Source Code del mod. 
 
+## Screenshots
+
+
 ## Instalación
 
 Para instalar el mod, descargar el archivo .dll en la carpeta de 
