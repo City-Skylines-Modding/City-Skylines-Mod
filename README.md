@@ -1,11 +1,34 @@
 # Unlock All Tiles
 
-Unlocks all land tiles.
+Desbloquea todas las áreas de construcción al momento de crear o continuar una 
+partida. 
 
-## Overview
+## Screenshots
 
-This mod is an extension to AreasExtensionBase.
+## Instalación
 
-### Installing the Mod
+Para instalar el mod, descargar el archivo .dll en la carpeta de 
 
-For manual install, find the ResourceMod.dll file and paste it inside the mods folder.
+```{bash}
+bin\Debug\UnlockAll.dll
+```
+
+### Steam
+
+```{bash}
+SteamLibrary\steamapps\common\City_Skylines\Files\Mods
+```
+
+### Epic Games
+
+```{bash}
+Epic Games\CitySkylines\Files\Mods
+```
+
+## Como Utilizar
+
+Para utilizar el mod, primero se tiene que verificar que el archivo .dll esté en 
+la carpeta correspondiente (ver paso anterior). Luego, iniciar el juego de City 
+Skylines y abrir el apartado de "Content Manager" y la pestaña de Mods. En esta
+pestaña hacer click en la casilla de "On/Off" para activar o desactivar el mod 
+respectivamente.
