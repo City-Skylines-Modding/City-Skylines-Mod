@@ -1,5 +1,11 @@
 # Mods para City Skylines
 
+Este repositorio contiene la documentación de cómo jugar City Skylines, los requisitos
+de hardware necesarios para tener la mejor experiencia, los tipos de mods que se 
+pueden desarrollar para el juego, como crear cada tipo de mod, como configurar
+el ambiente de desarrollo con Visual Studio 2022 (IDE), las funciones del API de
+City Skylines y diferentes mods desarrollados que agregan funcionalidad al juego.
+
 ## Tabla de Contenidos
 
 - [Overview de los Requisitos del Juego](./OVERVIEW.md)
