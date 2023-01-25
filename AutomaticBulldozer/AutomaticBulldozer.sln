@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticBulldoze", "AutomaticBulldoze.csproj", "{A346DD99-82A5-4417-8534-A3F0BF27D9F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticBulldozer", "AutomaticBulldozer.csproj", "{9027C4EF-A69F-4A8C-86DC-E2D38D89D319}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A346DD99-82A5-4417-8534-A3F0BF27D9F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A346DD99-82A5-4417-8534-A3F0BF27D9F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A346DD99-82A5-4417-8534-A3F0BF27D9F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A346DD99-82A5-4417-8534-A3F0BF27D9F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9027C4EF-A69F-4A8C-86DC-E2D38D89D319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9027C4EF-A69F-4A8C-86DC-E2D38D89D319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9027C4EF-A69F-4A8C-86DC-E2D38D89D319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9027C4EF-A69F-4A8C-86DC-E2D38D89D319}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3DE2651D-3A1D-413D-A2EB-AE1A37381C70}
+		SolutionGuid = {3BEC0CEB-4B23-45D0-A107-063E5799BC46}
 	EndGlobalSection
 EndGlobal
