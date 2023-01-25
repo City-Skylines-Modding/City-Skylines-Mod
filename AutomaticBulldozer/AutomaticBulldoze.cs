@@ -10,11 +10,21 @@ namespace AutomaticBulldoze.Source
 {
     public class AutomaticBulldozeInformation : IUserMod
     {
+        /**
+         * @brief
+         * Fills the information about the mod.
+         * @return The name of the mod
+         */
         public string Name
         {
             get { return "Automatic Bulldoze"; }
         }
 
+        /**
+         * @brief
+         * Fills the description about the mod.
+         * @return The description of the mod
+         */
         public string Description
         {
             get { return "Automatically bulldoze abandoned buildings"; }
@@ -104,7 +114,7 @@ namespace AutomaticBulldoze.Source
 
             var abandonedBuildings = FindAbandonedBuildings();
 
-            if (abandonedBuildings.Count > 0
+            if (abandonedBuildings.Count > 0)
                 DestroyBuildings(abandonedBuildings);
         }
 
@@ -127,19 +137,65 @@ namespace AutomaticBulldoze.Source
             }
         }
 
+        /**
+         * @brief
+         * Handles the destruction of the buildings with "abandoned" associated to it.
+         * Basically, activates the automatic bulldozer.
+         * @param ID The ID of the building to be destroyed
+         * @return iterator
+         */
         private IEnumerator BulldozeBuildings(ushort ID)
         {
-            
+            if (_buildingManager.m_buildings.m_buffer[ID].m_flags != 0)
+            {
+                var information = _buildingManager.m_buildings.m_buffer[ID].Info;
+                
+                if (information.m_buildingAI.CheckBulldozing(
+                    ID, ref _buildingManager.m_buildings.m_buffer[ID]) == ToolBase.ToolErrors.None)
+                    _buildingManager.ReleaseBuilding(ID);
+            }
+
+            yield return (object)0;
         }
 
+        /**
+         * @brief
+         * Handles the search of buildings with "abandoned" associated to it.
+         * @return abandoned HashSet (ushort type) with all the abandoned buildings's ID.
+         */
         private HashSet<ushort> FindAbandonedBuildings()
         {
-          
+            var buildingID = new HashSet<ushort>(_buildingObjectObserver.BuildingID);
+            var abandoned = new HashSet<ushort>();
+
+            foreach (var ID in buildingID)
+            {
+                var building = _buildingManager.m_buildings.m_buffer[ID];
+
+                if (building.m_flags == Building.Flags.Abandoned)
+                    abandoned.Add(ID);
+            }
+
+            return abandoned;
         }
 
+        /**
+         * @brief
+         * Handles the search of existing buildings in the game.
+         * @return buildingID A HashSet (ushort type) with all the buildings's ID.
+         */
         private HashSet<ushort> FindExistingBuildings()
         {
+            var buildingID = new HashSet<ushort>();
             
+            for (var i = 0; i < _buildingManager.m_buildings.m_buffer.Length; i++)
+            {
+                if (_buildingManager.m_buildings.m_buffer[i].m_flags != Building.Flags.None 
+                    && !Building.Flags.Original.IsFlagSet(_buildingManager.m_buildings.m_buffer[i].m_flags))
+                    buildingID.Add((ushort)i);
+            }
+
+            return buildingID;
         }
 
 
@@ -158,7 +214,10 @@ namespace AutomaticBulldoze.Source
 
     public class BuildingObjectObserver
     {
+        // private readonly attributes
         private readonly BuildingManager _buildingManager;
+        
+        // public attributes
         public HashSet<ushort> BuildingID { get; private set; }
 
         /**
@@ -220,7 +279,8 @@ namespace AutomaticBulldoze.Source
     }
 
     public class Timer : ThreadingExtensionBase
-    {
+    { 
+    
         public delegate void SimulationTickEventHandler(object source, EventArgs args);
         public static event SimulationTickEventHandler SimluationTicks;
         
