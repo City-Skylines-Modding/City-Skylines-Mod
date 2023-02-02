@@ -30,7 +30,7 @@ namespace AutomaticBulldoze.Source
             get { return "Automatically bulldoze abandoned buildings"; }
         }
     }
-   
+
     public class AutomaticBulldozeLoader : LoadingExtensionBase
     {
         private AutomaticBulldozer _automaticBulldozer;
@@ -85,6 +85,7 @@ namespace AutomaticBulldoze.Source
             _simulationManager = Singleton<SimulationManager>.instance;
 
             _buildingObjectObserver = new BuildingObjectObserver();
+            _buildingObjectObserver.BuildingID.UnionWith(FindExistingBuildings());
 
             BindEvents();
         }
@@ -109,11 +110,8 @@ namespace AutomaticBulldoze.Source
          */
         private void OnSimulationTick(object source, EventArgs args)
         {
-            if (_simulationManager.m_currentFrameIndex % 100 != 0)
-                return;
-
             var abandonedBuildings = FindAbandonedBuildings();
-
+            
             if (abandonedBuildings.Count > 0)
                 DestroyBuildings(abandonedBuildings);
         }
@@ -128,8 +126,7 @@ namespace AutomaticBulldoze.Source
         {
             foreach (var ID in abandonedBuildings)
             {
-                if (_buildingObjectObserver.BuildingID.Contains(ID)
-                    && _buildingManager.m_buildings.m_buffer[ID].m_flags != Building.Flags.None)
+                if (_buildingObjectObserver.BuildingID.Contains(ID))
                 {
                     _simulationManager.AddAction(BulldozeBuildings(ID));
                     _buildingObjectObserver.BuildingID.Remove(ID);
@@ -149,7 +146,7 @@ namespace AutomaticBulldoze.Source
             if (_buildingManager.m_buildings.m_buffer[ID].m_flags != 0)
             {
                 var information = _buildingManager.m_buildings.m_buffer[ID].Info;
-                
+
                 if (information.m_buildingAI.CheckBulldozing(
                     ID, ref _buildingManager.m_buildings.m_buffer[ID]) == ToolBase.ToolErrors.None)
                     _buildingManager.ReleaseBuilding(ID);
@@ -187,10 +184,10 @@ namespace AutomaticBulldoze.Source
         private HashSet<ushort> FindExistingBuildings()
         {
             var buildingID = new HashSet<ushort>();
-            
+
             for (var i = 0; i < _buildingManager.m_buildings.m_buffer.Length; i++)
             {
-                if (_buildingManager.m_buildings.m_buffer[i].m_flags != Building.Flags.None 
+                if (_buildingManager.m_buildings.m_buffer[i].m_flags != Building.Flags.None
                     && !Building.Flags.Original.IsFlagSet(_buildingManager.m_buildings.m_buffer[i].m_flags))
                     buildingID.Add((ushort)i);
             }
@@ -216,7 +213,7 @@ namespace AutomaticBulldoze.Source
     {
         // private readonly attributes
         private readonly BuildingManager _buildingManager;
-        
+
         // public attributes
         public HashSet<ushort> BuildingID { get; private set; }
 
@@ -279,11 +276,11 @@ namespace AutomaticBulldoze.Source
     }
 
     public class Timer : ThreadingExtensionBase
-    { 
-    
+    {
+
         public delegate void SimulationTickEventHandler(object source, EventArgs args);
         public static event SimulationTickEventHandler SimluationTicks;
-        
+
         private float _counter;
 
         /**
@@ -304,7 +301,7 @@ namespace AutomaticBulldoze.Source
             {
                 _counter += simulationTimeDelta;
             }
-                
+
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
         }
     }
