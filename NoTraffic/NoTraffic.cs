@@ -36,18 +36,31 @@ namespace NoTraffic.Source
     {
         private void Start()
         {
+            DisableVehicleGeneration();
+        }
+
+        private void DisableVehicleGeneration()
+        {
             var vehicles = Singleton<VehicleManager>.instance.m_vehicles.m_buffer;
             var vehicleCount = Singleton<VehicleManager>.instance.m_vehicles.m_size;
 
             for (ushort i = 0; i < vehicleCount; i++)
             {
-                vehicles[i].Info.m_vehicleAI.SetVehicleName(i, ref vehicles[i], "NoTraffic");
+                vehicles[i].Info.m_vehicleAI.SetVehicleName(i, ref vehicles[i], "RemovedVehicle");
                 vehicles[i].Info.m_vehicleAI = null;
 
-                vehicles[i].m_flags = Vehicle.Flags.Deleted;
+                vehicles[i].m_targetPos0 = vehicles[i].m_targetPos1;
+                vehicles[i].m_path = 0;
+                vehicles[i].m_pathPositionIndex = 0;
+                vehicles[i].m_lastFrame = 0;
+
+                vehicles[i].m_flags &= ~Vehicle.Flags.Created;
+                vehicles[i].m_flags &= ~Vehicle.Flags.Spawned;
+                vehicles[i].m_flags &= ~Vehicle.Flags.Deleted;
             }
 
-            VehicleManager.instance.m_vehicles.m_size = 0;
+            // set vehicle count to 0
+            VehicleManager.instance.m_vehicleCount = 0;
         }
     }
 }
