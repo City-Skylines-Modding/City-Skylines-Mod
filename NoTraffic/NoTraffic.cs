@@ -1,66 +1,55 @@
-﻿using ColossalFramework;
-using ColossalFramework.Plugins;
-using ICities;
+﻿// Stop Vehicle generation in city skylines
 using UnityEngine;
-
+using ColossalFramework;
+using ICities;
+using System;
 
 namespace NoTraffic.Source
 {
     public class NoTrafficInformation : IUserMod
     {
-        /**
-         * @brief
-         * Shows the name of the mod in the mod list.
-         * @return Name Mod's Name
-         */
-        public string Name => "Stop Traffic Generation";
-
-        /**
-         * @brief
-         * Shows the mod's description in the City Skylines Content Manager
-         * Window.
-         * @return Description Mod's Description
-         */
-        public string Description => "Stops the generation of traffic in the game when the \'T\' key is pressed.";
-
-        public void OnEnabled()
-        {
-            var go = new GameObject("NoTraffic");
-            go.AddComponent<NoTraffic>();
-
-            Object.DontDestroyOnLoad(go);
-        }
+        public string Name => "No Traffic";
+        public string Description => "Stop Vehicle generation in city skylines";
     }
 
-    public class NoTraffic : MonoBehaviour
+    public class NoTraffic : ThreadingExtensionBase
     {
-        private void Start()
+        /**
+         * @brief
+         * Gets the instance of the VehicleManager and the number of vehicles in the
+         * game. Then it loops through all the vehicles and sets their flags to 0
+         * @param realTimeDelta The time since the last update.
+         * @param simulationTimeDelta The time since the last simulation update.
+         */
+        public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            DisableVehicleGeneration();
-        }
+            VehicleManager instance = Singleton<VehicleManager>.instance;
+            uint numVehicles = instance.m_vehicles.m_size;
 
-        private void DisableVehicleGeneration()
-        {
-            var vehicles = Singleton<VehicleManager>.instance.m_vehicles.m_buffer;
-            var vehicleCount = Singleton<VehicleManager>.instance.m_vehicles.m_size;
-
-            for (ushort i = 0; i < vehicleCount; i++)
+            for (int i = 0; i < numVehicles; i++)
             {
-                vehicles[i].Info.m_vehicleAI.SetVehicleName(i, ref vehicles[i], "RemovedVehicle");
-                vehicles[i].Info.m_vehicleAI = null;
+                Vehicle vehicle = instance.m_vehicles.m_buffer[i];
 
-                vehicles[i].m_targetPos0 = vehicles[i].m_targetPos1;
-                vehicles[i].m_path = 0;
-                vehicles[i].m_pathPositionIndex = 0;
-                vehicles[i].m_lastFrame = 0;
-
-                vehicles[i].m_flags &= ~Vehicle.Flags.Created;
-                vehicles[i].m_flags &= ~Vehicle.Flags.Spawned;
-                vehicles[i].m_flags &= ~Vehicle.Flags.Deleted;
+                if (vehicle.m_flags != Vehicle.Flags.Spawned)
+                {
+                    instance.ReleaseVehicle((ushort)i);
+                }
             }
 
-            // set vehicle count to 0
-            VehicleManager.instance.m_vehicleCount = 0;
+            if (numVehicles == 0)
+            {
+                numVehicles = (uint)instance.m_vehicles.m_buffer.Length;
+
+                for (int i = 0; i < numVehicles; i++)
+                {
+                    Vehicle vehicle = instance.m_vehicles.m_buffer[i];
+
+                    if (vehicle.m_flags != Vehicle.Flags.Spawned)
+                    {
+                        instance.ReleaseVehicle((ushort)i);
+                    }
+                }
+            }
         }
     }
 }
