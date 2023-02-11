@@ -1,17 +1,28 @@
-# Automatic Bulldozer
+# No Traffic Mod
 
-Herramienta que activa la funcionalidad de demoler los edificios que tengan el tag de
-"abondoned" (abandonado) asignado a ellos. Este mod realiza la destrucción automática de 
-los edificios sin que el jugador tenga que estar limpiando la ciudad de estos edificios.
+Este mod elimina la generación de todos los tipos de vehículos.
 
-## Screenshots
+## Recomendaciones
+
+Usar con los siguientes mods: 
+
+- Dinero Infinitos
+- Recursos Infinitos
+- Sin eventos para vehículos de servicios
+
+### Consideraciones Importantes
+
+El mod funciona por si solo, pero la funcionalidad de detener robos, apagar
+incendios, recolección de basura y servicios funerarios siguen funcionando y 
+hacen que los edificios terminen abandonados. Por eso motivo, se sugiere utilizar
+el mod que detiene los eventos anteriormente descritos.
 
 ## Instalación
 
 Para instalar el mod, descargar el archivo .dll en la carpeta de 
 
 ```{bash}
-bin\Debug\AutomaticBulldozer.dll  
+bin\Debug\NoTraffic.dll  
 ```
 
 ### Steam
