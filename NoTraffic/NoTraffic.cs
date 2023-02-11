@@ -2,7 +2,6 @@
 using UnityEngine;
 using ColossalFramework;
 using ICities;
-using System;
 
 namespace NoTraffic.Source
 {
@@ -54,45 +53,6 @@ namespace NoTraffic.Source
 
                 // Set the vehicle to despawn
                 instance.m_vehicles.m_buffer[i].m_flags = Vehicle.Flags.WaitingPath;
-            }
-        }
-    }
-
-    /** 
-     * Stop the crime, fire, ambulance, police, and garbage trucks events from spawning
-     */
-    public class NoEvents : ThreadingExtensionBase
-    {
-        /**
-         * @brief
-         * Gets the instance of the EventManager and the number of events in the
-         * game. Then it loops through all the events and sets their flags to 0
-         * @param realTimeDelta The time since the last update.
-         * @param simulationTimeDelta The time since the last simulation update.
-         */
-        public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
-        {
-            EventManager instance = Singleton<EventManager>.instance;
-            int numEvents = instance.m_events.m_size;
-
-            for (int i = 0; i < numEvents; i++)
-            {
-                EventData evt = instance.m_events.m_buffer[i];
-
-                // If array is empty, skip
-                if (evt.m_flags == 0)
-                {
-                    continue;
-                }
-
-                // If array index is out of bounds, skip
-                if (i >= numEvents)
-                {
-                    continue;
-                }
-
-                // Set the flags to 0
-                instance.m_events.m_buffer[i].m_flags = 0;
             }
         }
     }
