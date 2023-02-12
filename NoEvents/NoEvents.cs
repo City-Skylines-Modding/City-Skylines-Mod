@@ -75,7 +75,6 @@ namespace NoEvents.Source
          */
         public static void DisableEvents()
         {
-            // Get crime buffer
             BuildingManager buildingInstance = Singleton<BuildingManager>.instance;
             var buildingCount = buildingInstance.m_buildings.m_size;
 
@@ -91,22 +90,20 @@ namespace NoEvents.Source
                     continue;
                 }
 
-                // Crime Buffer
                 buildingInstance.m_buildings.m_buffer[i].m_crimeBuffer = 0;
 
-                // Health Buffer
                 buildingInstance.m_buildings.m_buffer[i].m_healthProblemTimer = 0;
                 buildingInstance.m_buildings.m_buffer[i].m_health = 0;
                 buildingInstance.m_buildings.m_buffer[i].m_childHealth = 0;
                 buildingInstance.m_buildings.m_buffer[i].m_seniorHealth = 0;
 
-                // Fire Buffer
                 buildingInstance.m_buildings.m_buffer[i].m_fireIntensity = 0;
                 buildingInstance.m_buildings.m_buffer[i].m_fireHazard = 0;
 
-                // Garbage Collection
                 buildingInstance.m_buildings.m_buffer[i].m_garbageBuffer = 0;
                 buildingInstance.m_buildings.m_buffer[i].m_garbageTrafficRate = 0;
+
+                buildingInstance.m_buildings.m_buffer[i].m_deathProblemTimer = 0;
             }
         }
     }
