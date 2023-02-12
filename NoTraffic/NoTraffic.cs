@@ -79,7 +79,7 @@ namespace NoTraffic.Source
                 Vehicle vehicles = vehicleInstance.m_vehicles.m_buffer[i];
 
                 // If array is empty
-                if (vehicles.m_flags == 0)
+                if (vehicleInstance.m_vehicles.m_buffer[i].m_flags == 0)
                 {
                     continue;
                 }
