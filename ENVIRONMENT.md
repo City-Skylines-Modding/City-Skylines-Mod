@@ -4,13 +4,11 @@ A continuación se muestra una guía para utilizar Visual Studio de Microsoft pa
 
 ## INSTALANDO VISUAL STUDIO IDE
 
-Podemos encontrar el instalador de Visual Studio Community en la página de Microsoft.
-
-[Descargar Visual Studio Tools: instalación gratuita para Windows, Mac, Linux](https://visualstudio.microsoft.com/es/downloads/)
+Podemos encontrar el instalador de [Visual Studio](https://visualstudio.microsoft.com/vs/) en la página de Microsoft.
 
 ## API de Unity
 
-Para acceder al API de Unity, es necesario tener instalado la aplicación de Unity Hub.
+Para acceder al API de Unity, es necesario tener instalado la aplicación de [Unity Hub](https://unity.com/download).
 
 ## PASOS PARA INSTALAR LOS COMPONENTES DE UNITY EN VISUAL STUDIO IDE
 
@@ -28,13 +26,19 @@ Para acceder al API de Unity, es necesario tener instalado la aplicación de Uni
 Si ya tenías Visual Studio instalado, navega en tu workspace a Tools.
 En tools, selecciona la opción de “Get tools and Features” para modificar la instalación y sigue los pasos de arriba.
 
+### TIPO DE PROYECTO
+
+El tipo de proyecto que se utilizará es “Class Library” para C#. Esto es para que el proyecto no tenga un punto de entrada y no se ejecute como un programa.
+
+![vs_project.png](images/vs_project.png)
+
 ### AÑADIENDO REFERENCIAS
 
 1. En la pestaña de solución, busca el tab de References (Add > Reference)
 2. Click en Browse
 3. Navega hasta
 
-   ```csharp
+   ```bash
    <%STEAM%>\SteamApps\common\Cities_Skylines\Cities_Data\Managed
    ```
 
@@ -48,7 +52,7 @@ En este momento, cuando compilas tu mod, la DLL se colocará en la carpeta de tu
 2. Selecciona “crear eventos” en el panel izquierdo.
 3. Pega el siguiente comando y guarda.
 
-   ```csharp
+   ```bash
    mkdir "%LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)"
 
    del "%LOCALAPPDATA%\Colossal Order\Cities_Skylines\Addons\Mods\$(SolutionName)\$(TargetFileName)"
