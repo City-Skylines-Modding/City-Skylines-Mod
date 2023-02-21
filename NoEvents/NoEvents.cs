@@ -104,6 +104,8 @@ namespace NoEvents.Source
                 buildingInstance.m_buildings.m_buffer[i].m_garbageTrafficRate = 0;
 
                 buildingInstance.m_buildings.m_buffer[i].m_deathProblemTimer = 0;
+
+                buildingInstance.m_buildings.m_buffer[i].m_workerProblemTimer = 0;
             }
         }
     }
