@@ -85,6 +85,7 @@ namespace TerrainHeight.Source
          */
         private void OnKeysPressed()
         {
+            // UI gets stuck when keys are pressed to fast.
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.T))
             {
                 ShowTerrainHeight();
@@ -100,6 +101,11 @@ namespace TerrainHeight.Source
         private void OnKeysReleased()
         {
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
+            {
+                DeleteUIComponent();
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
             {
                 DeleteUIComponent();
             }
