@@ -89,6 +89,8 @@ namespace TerrainHeight.Source
             {
                 ShowTerrainHeight();
             }
+
+            base.OnUpdate(0f, 0f);
         }
 
         /**
@@ -102,10 +104,7 @@ namespace TerrainHeight.Source
                 DeleteUIComponent();
             }
 
-            if (Input.GetKeyUp(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
-            {
-                DeleteUIComponent();
-            }
+            base.OnUpdate(0f, 0f);
         }
 
         /**
@@ -119,13 +118,11 @@ namespace TerrainHeight.Source
 
             UIView view = UIView.GetAView();
             UILabel label = view.AddUIComponent(typeof(UILabel)) as UILabel;
-            
+
             label.name = "TerrainHeightLabel";
             label.text = "Terrain Height: " + terrainMeters.ToString("0.00") + "m";
             label.textScale = 0.8f;
             label.relativePosition = new Vector3(70f, 25f);
-
-            base.OnUpdate(0f, 0f);
         }
 
         /**
