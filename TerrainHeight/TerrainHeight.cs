@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Threading;
+
 using ICities;
 using UnityEngine;
 using ColossalFramework;
 using ColossalFramework.UI;
-using System.Collections.Generic;
 
 namespace TerrainHeight.Source
 {
     public class TerrainHeightInformation : IUserMod
     {
-        public string Name => "Terrain Height";
-        public string Description => "Gets the terrain height in meters.";
+        public string Name => "Terrain Height Information";
+        public string Description => "Displays the height of the terrain under the mouse cursor.";
     }
 
     public class TerrainHeightLoader : LoadingExtensionBase
@@ -19,9 +20,9 @@ namespace TerrainHeight.Source
 
         /**
          * @brief
-         * Overrides the default behaviour of the LoadingExtensionBase function.
-         * Allows the mod to be accessed when a game is loaded or created.
-         * @param mode Mode in which the game is accessed.
+         * Overrides the defualt behaviour of the OnLevelLoaded function.
+         * Creates a new instance of the mod.
+         * @param mode The mode the game is in.
          */
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -35,8 +36,8 @@ namespace TerrainHeight.Source
 
         /**
          * @brief
-         * Overrides the default behaviour of the OnLevelUnloading function.
-         * Deletes the mod when the game is closed.
+         * Overrides the defualt behaviour of the OnLevelUnloading function.
+         * Destroys the mod instance.
          */
         public override void OnLevelUnloading()
         {
@@ -47,80 +48,99 @@ namespace TerrainHeight.Source
 
             base.OnLevelUnloading();
         }
-
-
     }
 
     public class TerrainHeight : ThreadingExtensionBase
     {
-        private TerrainManager terrainManager;
-        private UILabel terrainHeightLabel;
-        private UILabel terrainHeightValue;
-        private UILabel terrainHeightUnit;
-        private float terrainHeight;
 
         /**
          * @brief
-         * Overrides the default behaviour of the OnCreated function.
-         * Creates the mod when the game is loaded or created.
+         * Gets the terrain height at the mouse position.
+         * @return Terrain at the mouse position. 
          */
-        public override void OnCreated(IThreading threading)
+        private float GetTerrainHeight()
         {
-            terrainManager = Singleton<TerrainManager>.instance;
+            Vector3 mousePosition = Input.mousePosition;
 
-            terrainHeightLabel = UIView.GetAView().AddUIComponent(typeof(UILabel)) as UILabel;
-            terrainHeightLabel.text = "Terrain Height";
-            terrainHeightLabel.relativePosition = new Vector3(10, 10);
-            terrainHeightLabel.textScale = 0.8f;
-
-            terrainHeightValue = UIView.GetAView().AddUIComponent(typeof(UILabel)) as UILabel;
-            terrainHeightValue.relativePosition = new Vector3(10, 30);
-            terrainHeightValue.textScale = 0.8f;
-
-            terrainHeightUnit = UIView.GetAView().AddUIComponent(typeof(UILabel)) as UILabel;
-            terrainHeightUnit.text = "m";
-            terrainHeightUnit.relativePosition = new Vector3(10, 50);
-            terrainHeightUnit.textScale = 0.8f;
-
-            base.OnCreated(threading);
+            return Singleton<TerrainManager>.instance.SampleDetailHeight(mousePosition);
         }
 
         /**
          * @brief
-         * Overrides the default behaviour of the OnReleased function.
-         * Deletes the mod when the game is closed.
-         */
-        public override void OnReleased()
-        {
-            if (terrainHeightLabel != null)
-            {
-                UnityEngine.Object.Destroy(terrainHeightLabel);
-            }
-
-            if (terrainHeightValue != null)
-            {
-                UnityEngine.Object.Destroy(terrainHeightValue);
-            }
-
-            if (terrainHeightUnit != null)
-            {
-                UnityEngine.Object.Destroy(terrainHeightUnit);
-            }
-
-            base.OnReleased();
-        }
-
-        /**
-         * @brief
-         * Overrides the default behaviour of the OnUpdate function.
-         * Updates the mod when the game is loaded or created.
+         * Overrides the default behaviour of the OnUpdate Funcion.
+         * @param realTimeDelta The time since the last update.
+         * @param simulationTimeDelta The time since the last simulation update.
          */
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            terrainHeight = terrainManager.GetSurfaceHeight();
-            
+            OnKeysPressed();
+            OnKeysReleased();
 
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
+        }
+
+        /**
+         * @brief
+         * Checks if the keys Left Control + T are pressed.
+         */
+        private void OnKeysPressed()
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.T))
+            {
+                ShowTerrainHeight();
+            }
+        }
+
+        /**
+         * @brief
+         * Checks if the keys Left Control + T are released.
+         */
+        private void OnKeysReleased()
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
+            {
+                DeleteUIComponent();
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
+            {
+                DeleteUIComponent();
+            }
+        }
+
+        /**
+         * @brief
+         * Creates a UI Component to display the terrain height.
+         * The component can be accesed when the keys Left Control + T are pressed.
+         */
+        private void ShowTerrainHeight()
+        {
+            float terrainMeters = GetTerrainHeight() / 8f;
+
+            UIView view = UIView.GetAView();
+            UILabel label = view.AddUIComponent(typeof(UILabel)) as UILabel;
+            
+            label.name = "TerrainHeightLabel";
+            label.text = "Terrain Height: " + terrainMeters.ToString("0.00") + "m";
+            label.textScale = 0.8f;
+            label.relativePosition = new Vector3(70f, 25f);
+
+            base.OnUpdate(0f, 0f);
+        }
+
+        /**
+         * @brief
+         * Deletes the previous instance of the UI Component.
+         */
+        private void DeleteUIComponent()
+        {
+            UIView view = UIView.GetAView();
+            UILabel label = view.FindUIComponent<UILabel>("TerrainHeightLabel");
+
+            if (label != null)
+            {
+                UnityEngine.Object.Destroy(label);
+            }
         }
     }
 }
