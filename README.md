@@ -1,23 +1,36 @@
-# Mods para City Skylines
+# Terrain Height Mod
 
-Este repositorio contiene la documentación de cómo jugar City Skylines, los requisitos
-de hardware necesarios para tener la mejor experiencia, los tipos de mods que se
-pueden desarrollar para el juego, como crear cada tipo de mod, como configurar
-el ambiente de desarrollo con Visual Studio 2022 (IDE), las funciones del API de
-City Skylines y diferentes mods desarrollados que agregan funcionalidad al juego.
+Este mod permite visualizar la altura de los elementos topograficos del juego. Para observar la altura
+en metros, se necesita presionar las teclas Left Control + T. 
 
-## Tabla de Contenidos
+## Recomendaciones
 
-- [Overview de los Requisitos del Juego](./OVERVIEW.md)
-- [Bases de Como Modificar el Juego](./MODBASICS.md)
-- [Tipos de Mods](./MODS.md)
-- [Ambiente de Desarrollo](./ENVIRONMENT.md)
-- [Herramientas para Desarrollar Mods](./MODTOOLS.md)
-- Mods
-  - [Automatic Bulldozer](https://github.com/salgue441/City-Skylines-Mod/tree/AutomaticBulldozer)
-  - [NoTraffic](https://github.com/salgue441/City-Skylines-Mod/tree/NoTraffic)
-  - [NoEvents](https://github.com/salgue441/City-Skylines-Mod/tree/NoEvents)
-  - [Unlimited Money](https://github.com/salgue441/City-Skylines-Mod/tree/UnlimitedMoney)
-  - [Unlimited Oil and Resources](https://github.com/salgue441/City-Skylines-Mod/tree/UnlimitedOilandResources)
-  - [Unlock All Milestones & Buildings](https://github.com/salgue441/City-Skylines-Mod/tree/UnlockAll)
-  - [Unlock All Game Tiles](https://github.com/salgue441/City-Skylines-Mod/tree/UnlockTiles)
+- (Temporal) No presionar las teclas tan rápido.
+
+## Instalación
+
+Para instalar el mod, descargar el archivo .dll en la carpeta de
+
+```{bash}
+bin\Debug\TerrainHeight.dll
+```
+
+### Steam
+
+y moverlo a la carpeta de
+
+```{bash}
+SteamLibrary\steamapps\common\City_Skylines\Files\Mods
+```
+
+(Dentro de esta carpeta se puede crear una nueva carpeta con el nombre del mod)
+
+### Epic 
+
+```{bash}
+Epic Games\CitySkylines\Files\Mods
+```
+
+## Como utilizar
+
+Para utilizar el mod, primero se tiene que verificar que el archivo .dll esté en la carpeta correcta (ver paso anterior). Luego, iniciar el juego de City Skylines e irse al apartado de "Content Manager" y la pestaña de Mods. En esta pestaña hacer click en la casilla de "On/Off" para activar o desactivar el mod respectivamente.
