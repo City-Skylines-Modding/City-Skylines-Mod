@@ -16,3 +16,11 @@ D:\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\De
 D:\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\Mono.Security.dll
 D:\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\Assembly-CSharp.dll
 D:\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\PopsApiWrapper.dll
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\TerrainHeight.dll
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\TerrainHeight.pdb
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\bin\Debug\PopsApiWrapper.dll
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\obj\Debug\TerrainHeight.csproj.AssemblyReference.cache
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\obj\Debug\TerrainHeight.csproj.CoreCompileInputs.cache
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\obj\Debug\TerrainHeight.csproj.CopyComplete
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\obj\Debug\TerrainHeight.dll
+C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\obj\Debug\TerrainHeight.pdb

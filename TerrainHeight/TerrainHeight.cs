@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-
 using ICities;
 using UnityEngine;
 using ColossalFramework;
@@ -8,10 +7,16 @@ using ColossalFramework.UI;
 
 namespace TerrainHeight.Source
 {
+    /**
+     * @class TerrainHeightInformation
+     * @extends IUserMod
+     * @brief This class is responsible for displaying the information about the mod in the content manager
+     */
     public class TerrainHeightInformation : IUserMod
     {
-        public string Name => "Terrain Height Information";
-        public string Description => "Displays the height of the terrain under the mouse cursor.";
+        public string Name => "Terrain Height Mod";
+        public string Description => "Displays the terrain height at the mouse cursor position" +
+            ". After the following keys are pressed: ctrl + shift + t";
     }
 
     public class TerrainHeightLoader : LoadingExtensionBase
@@ -35,10 +40,10 @@ namespace TerrainHeight.Source
         }
 
         /**
-         * @brief
-         * Overrides the defualt behaviour of the OnLevelUnloading function.
-         * Destroys the mod instance.
-         */
+        * @brief
+        * Overrides the defualt behaviour of the OnLevelUnloading function.
+        * Destroys the mod instance.
+        */
         public override void OnLevelUnloading()
         {
             if (terrainHeight != null)
@@ -50,99 +55,122 @@ namespace TerrainHeight.Source
         }
     }
 
+    /**
+     * @class TerrainHeight
+     * @extends ThreadingExtensionBase
+     * @brief This class is responsible for displaying the terrain height at the mouse cursor position
+     */
     public class TerrainHeight : ThreadingExtensionBase
     {
+        private bool isUpdating = false;
+        private UILabel uiLabel;
 
         /**
          * @brief
-         * Gets the terrain height at the mouse position.
-         * @return Terrain at the mouse position. 
+         * Disposes of the UI label.
          */
-        private float GetTerrainHeight()
+        public void Dispose()
         {
-            Vector3 mousePosition = Input.mousePosition;
-
-            return Singleton<TerrainManager>.instance.SampleDetailHeight(mousePosition);
+            if (uiLabel != null)
+            {
+                UnityEngine.Object.Destroy(uiLabel.gameObject);
+                uiLabel = null;
+            }
         }
 
         /**
          * @brief
-         * Overrides the default behaviour of the OnUpdate Funcion.
-         * @param realTimeDelta The time since the last update.
-         * @param simulationTimeDelta The time since the last simulation update.
+         * Overrides the default behaviour of the OnUpdate function.
          */
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            OnKeysPressed();
-            OnKeysReleased();
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.T))
+            {
+                isUpdating = !isUpdating;
+
+                if (isUpdating)
+                {
+                    showTerrainHeight();
+                }
+                else
+                {
+                    hideTerrainHeight();
+                }
+            }
+
+            if (isUpdating)
+            {
+                updateTerrainHeight();
+            }
 
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
         }
 
         /**
          * @brief
-         * Checks if the keys Left Control + T are pressed.
+         * Shows the terrain height at the mouse cursor position.
          */
-        private void OnKeysPressed()
+        private void showTerrainHeight()
         {
-            // UI gets stuck when keys are pressed to fast.
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.T))
+            if (uiLabel == null)
             {
-                ShowTerrainHeight();
+                uiLabel = createUIComponent();
             }
 
-            base.OnUpdate(0f, 0f);
+            uiLabel.isVisible = true;
+            updateTerrainHeight();
         }
 
         /**
          * @brief
-         * Checks if the keys Left Control + T are released.
+         * Hides the terrain height at the mouse cursor position.
          */
-        private void OnKeysReleased()
+        private void hideTerrainHeight()
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
+            if (uiLabel != null)
             {
-                DeleteUIComponent();
+                uiLabel.isVisible = false;
             }
-
-            if (Input.GetKeyUp(KeyCode.LeftControl) && Input.GetKeyUp(KeyCode.T))
-            {
-                DeleteUIComponent();
-            }
-
-            base.OnUpdate(0f, 0f);
         }
 
         /**
          * @brief
-         * Creates a UI Component to display the terrain height.
-         * The component can be accesed when the keys Left Control + T are pressed.
+         * Creates the UI Component with the terrain height.
+         * @return The UI Component with the terrain height.
          */
-        private void ShowTerrainHeight()
+        private UILabel createUIComponent()
         {
-            float terrainMeters = GetTerrainHeight() / 8f;
-
-            UIView view = UIView.GetAView();
-            UILabel label = view.AddUIComponent(typeof(UILabel)) as UILabel;
+            UIView uiView = UIView.GetAView();
+            UILabel label = uiView.AddUIComponent(typeof(UILabel)) as UILabel;
 
             label.name = "TerrainHeightLabel";
-            label.text = "Terrain Height: " + terrainMeters.ToString("0.00") + "m";
+            label.relativePosition = new Vector3(0, 0);
+            label.textAlignment = UIHorizontalAlignment.Left;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textScale = 0.8f;
-            label.relativePosition = new Vector3(70f, 25f);
+            label.padding = new RectOffset(60, 10, 10, 10);
+            label.autoSize = true;
+            label.wordWrap = true;
+            label.autoHeight = true;
+            label.autoSize = true;
+            label.backgroundSprite = "GenericPanel";
+            label.color = new Color32(255, 255, 255, 255);
+            label.opacity = 0.8f;
+
+            return label;
         }
 
         /**
          * @brief
-         * Deletes the previous instance of the UI Component.
+         * Updates the terrain height at the mouse cursor position
          */
-        private void DeleteUIComponent()
+        private void updateTerrainHeight()
         {
-            UIView view = UIView.GetAView();
-            UILabel label = view.FindUIComponent<UILabel>("TerrainHeightLabel");
-
-            if (label != null)
+            if (uiLabel != null)
             {
-                UnityEngine.Object.Destroy(label);
+                Vector3 mousePosition = Input.mousePosition;
+                float terrainHeight = TerrainManager.instance.SampleRawHeightSmooth(mousePosition) / 8f;
+                uiLabel.text = "Terrain Height: " + terrainHeight.ToString("0.00") + "m";
             }
         }
     }
