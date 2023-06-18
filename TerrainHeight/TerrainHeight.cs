@@ -81,10 +81,12 @@ namespace TerrainHeight.Source
         /**
          * @brief
          * Overrides the default behaviour of the OnUpdate function.
+         * Updates the created panel when the mouse is moved around
+         * or the camera is moved with the WASD keys.
          */
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.T))
+            if (isKeysPressed())
             {
                 isUpdating = !isUpdating;
 
@@ -104,6 +106,17 @@ namespace TerrainHeight.Source
             }
 
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
+        }
+
+        /**
+         * @brief
+         * Checks if the following keys are pressed: ctrl + shift + t
+         * @return True if the following keys are pressed: ctrl + shift + t
+         * @return False if the following keys are not pressed: ctrl + shift + t
+         */
+        private bool isKeysPressed()
+        {
+            return Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.T);
         }
 
         /**
@@ -144,16 +157,18 @@ namespace TerrainHeight.Source
             UILabel label = uiView.AddUIComponent(typeof(UILabel)) as UILabel;
 
             label.name = "TerrainHeightLabel";
-            label.relativePosition = new Vector3(0, 0);
+            label.relativePosition = new Vector3(60, 15);
             label.textAlignment = UIHorizontalAlignment.Left;
             label.verticalAlignment = UIVerticalAlignment.Middle;
             label.textScale = 0.8f;
-            label.padding = new RectOffset(60, 10, 10, 10);
+            label.padding = new RectOffset(10, 10, 10, 10);
+
             label.autoSize = true;
-            label.wordWrap = true;
-            label.autoHeight = true;
-            label.autoSize = true;
-            label.backgroundSprite = "GenericPanel";
+            label.width = 200;
+            label.height = 30;
+            label.wordWrap = false;
+
+            label.backgroundSprite = "ButtonMenu";
             label.color = new Color32(255, 255, 255, 255);
             label.opacity = 0.8f;
 
