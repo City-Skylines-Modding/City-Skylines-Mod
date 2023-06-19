@@ -148,7 +148,7 @@ namespace TerrainHeight.Source
 
         /**
          * @brief
-         * Creates the UI Component with the terrain height.
+         * Creates the UI Component with the terrain height. 
          * @return The UI Component with the terrain height.
          */
         private UILabel createUIComponent()
