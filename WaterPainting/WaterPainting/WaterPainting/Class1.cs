@@ -1,178 +1,187 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
 using ICities;
+using UnityEngine;
+using ColossalFramework;
+using ColossalFramework.UI;
 
 namespace WaterPainting.Source
 {
     /**
      * @class WaterPaintingInformation
      * @extends IUserMod
-     * @brief
-     * Gives the game information about the mod.
+     * @brief Displays the information for the mod.
      */
     public class WaterPaintingInformation : IUserMod
     {
-        public string Name => "Water Painting";
-        public string Description => "Paint water with the terrain tool when " +
-            "the keys ctrl + shift + p are pressed.";
+        public string Name => "Water Painting Tool";
+        public string Description => "Allows the user to paint with water when the following " +
+            "keys are pressed: ctrl + shift + p";
     }
 
     /**
      * @class WaterPaintingLoader
      * @extends LoadingExtensionBase
-     * @brief
-     * Loads the mod when the game is loaded.
+     * @brief Loads the mod.
      */
     public class WaterPaintingLoader : LoadingExtensionBase
     {
-        private WaterPainting waterPainting;
-        private GameObject bannerObject;
-        private Text bannerText;
+        private WaterPaintingTool m_waterPaintingTool;
 
         /**
-         * @brief
-         * Overloaded OnLevelLoaded method. Creates an instance of the
-         * mod
-         * @param mode The mode the game is in.
+         * @brief 
+         * Overrides the OnLevelLoaded method and sets the tool to the water painting tool.
          */
         public override void OnLevelLoaded(LoadMode mode)
         {
             if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
             {
-                waterPainting = new WaterPainting();
-
-                // Create the banner object
-                bannerObject = new GameObject("WaterPaintingBanner", typeof(RectTransform), typeof(CanvasRenderer));
-                bannerObject.transform.parent = bannerObject.transform;
-                bannerObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 100f);
-
-                // Add a Text component to the banner object
-                bannerText = bannerObject.AddComponent<Text>();
-                bannerText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                bannerText.text = "Water Painting Mod Active";
-                bannerText.fontSize = 24;
-                bannerText.color = Color.white;
-                bannerText.alignment = TextAnchor.MiddleCenter;
+                m_waterPaintingTool = new WaterPaintingTool();
             }
 
             base.OnLevelLoaded(mode);
         }
-
-        /**
-         * @brief
-         * Overrides the defualt behaviour of the OnLevelUnloading function.
-         */
-        public override void OnLevelUnloading()
-        {
-            if (waterPainting != null)
-            {
-                waterPainting.Dispose();
-                waterPainting = null;
-            }
-
-            base.OnLevelUnloading();
-        }
     }
 
     /**
-     * @class WaterPainting
-     * @extends MonoBehaviour, ThreadingExtensionBase, IDisposable
-     * @brief
-     * Handles the mod's logic.
+     * @class WaterPaintingTool 
+     * @extends TerrainTool
+     * @brief Allows the user to paint with water by using the terrain landscape tool. 
+     * It overrides this tool and adds the functionality to paint with water.
      */
-    public class WaterPainting : ThreadingExtensionBase, IDisposable
+    public class WaterPaintingTool : TerrainTool
     {
-        private bool isPainting = false;
+        private bool m_isPainting = false;
+        private UITextureAtlas.SpriteInfo m_toolCursor;
 
         /**
          * @brief
-         * Disposes of the tool
+         * Called when the user presses the control key, shift key, and p key.
          */
-        public void Dispose()
+        protected override void OnEnable()
         {
-            if (isPainting)
-            {
-                isPainting = false;
-            }
+            m_toolCursor = GetToolCursor();
+            base.OnEnable();
+        }
+
+        /**
+         * @brief 
+         * Get the cursor sprint info
+         */
+        private UITextureAtlas.SpriteInfo GetToolCursor()
+        {
+            UITextureAtlas atlas = Resources.FindObjectsOfTypeAll<UITextureAtlas>()[0];
+            return atlas["OptionBaseFocused"];
+        }
+
+        /**
+         * @brief 
+         * Overrides the default behaviour of the tool to handle tool updates 
+         * (mouse movement)
+         */
+        protected override void OnToolUpdate()
+        {
+            HandleInput();
+
+            if (!m_isPainting)
+                ShowToolCursor(false);
+
+            ShowToolCursor(true);
+            base.OnToolUpdate();
         }
 
         /**
          * @brief
-         * Overrides the default behaviour of the OnUpdate function.
-         * Generates the tool when the keys ctrl + shift + p are pressed.
-         * @param realTimeDelta The real time delta.
-         * @param simulationTimeDelta The simulation time delta.
+         * Overrides the default behaviour of the destruction tool to handle
          */
-        public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
+        protected override void OnDestroy()
         {
-            if (isKeysPressed())
-            {
-                isPainting = !isPainting;
-            }
-
-            if (isPainting)
-            {
-                PainWater();
-            }
-
-            base.OnUpdate(realTimeDelta, simulationTimeDelta);
+            m_isPainting = false;
+            m_toolCursor = null;
+            base.OnDestroy();
         }
 
         /**
          * @brief
-         * Checks if the following keys are pressed: ctrl + shift + t
-         * @return True if the following keys are pressed: ctrl + shift + t
-         * @return False if the following keys are not pressed: ctrl + shift + t
+         * Show and hide the tool cursor based on the input parameter
+         * @param show Boolean that determines whether to show or hide the tool cursor
          */
-        private bool isKeysPressed()
+        private void ShowToolCursor(bool show)
         {
-            return Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) 
-                && Input.GetKeyDown(KeyCode.P);
-        }
-
-        /**
-         * @brief
-         * Paints the water with the terrain tool.
-         */
-        private void PainWater()
-        {
-            Action<GameObject> instantiateWater = (GameObject waterPrefab) =>
+            if (m_toolCursor != null)
             {
-                Vector3 mousePosition = Input.mousePosition;
-                Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-                RaycastHit raycastHit;
-
-                if (Physics.Raycast(ray, out raycastHit))
+                CursorInfo cursorInfo = new CursorInfo
                 {
-                    Vector3 waterPosition = raycastHit.point;
-                    GameObject.Instantiate(waterPrefab, waterPosition, Quaternion.identity);
-                }
-            };
+                    m_texture = m_toolCursor.texture,
+                    m_hotspot = m_toolCursor.region.size / 2,
+                };
 
-            GameObject WaterPrefab = Resources.Load<GameObject>("WaterPrefab");
-            instantiateWater(WaterPrefab);
+                if (show) 
+                    Cursor.SetCursor(cursorInfo.m_texture, cursorInfo.m_hotspot, CursorMode.Auto);
 
-            // Paints the water at the mouse position with the terrain tool.
-            Vector3 MousePosition = Input.mousePosition;
-            Ray Ray = Camera.main.ScreenPointToRay(MousePosition);
-            RaycastHit m_raycastHit;
-
-            if (Physics.Raycast(Ray, out m_raycastHit))
-            {
-                Vector3 WaterPosition = m_raycastHit.point;
-                float waterLevel = WaterPosition.y;
-
-                TerrainModify.UpdateArea(
-                    WaterPosition.x - 10f,
-                    WaterPosition.z - 10f,
-                    WaterPosition.x + 10f,
-                    waterLevel,
-                    false,
-                    false,
-                    false
-                );
+                else 
+                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             }
+        }
+
+        /**
+         * @brief
+         * Handles the input from the user. If the user presses the control key, shift key, and p key
+         * then the tool will start painting with water. If the user releases the keys then the tool
+         * will stop painting with water.
+         */
+        private void HandleInput()
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift)
+                && Input.GetKeyDown(KeyCode.P))
+                m_isPainting = !m_isPainting;
+        }
+
+        /**
+         * @brief
+         * Applies brush to the terrain when painting with water.
+         * @param cameraInfo Camera information for the current camera.
+         */
+        public override void RenderGeometry(RenderManager.CameraInfo cameraInfo)
+        {
+            base.RenderGeometry(cameraInfo);
+
+            if (!m_isPainting)
+                return;
+
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (RayCastTerrain(mouseRay, out Vector3 hitPos))
+            {
+                int x = Mathf.FloorToInt(hitPos.x);
+                int y = Mathf.FloorToInt(hitPos.y);
+                int z = Mathf.FloorToInt(hitPos.z);
+                float height = TerrainManager.instance.GetBlockHeight(x, z);
+
+                height = Mathf.Min(1f, height + 0.1f);
+                TerrainModify.UpdateArea(x, y, z, height, true, false, false);
+            }
+        }
+
+        /**
+         * @brief
+         * Casts a ray from the mouse position to the terrain and returns the hit position. 
+         * Uses the following layers: 15, 17, 19, 20, 21, and 22 of the terrain.
+         * @param ray Ray from the mouse position to the terrain.
+         * @param hitPosition The position that the ray hits the terrain.
+         * @return true if the ray hits the terrain.
+         * @return false if the ray does not hit the terrain.
+         */
+        private bool RayCastTerrain(Ray ray, out Vector3 hitPosition)
+        {
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, 
+                               1 << 15 | 1 << 17 | 1 << 19 | 1 << 20 | 1 << 21 | 1 << 22))
+            {
+                hitPosition = raycastHit.point;
+                return true;
+            }
+
+            hitPosition = Vector3.zero;
+            return false;
         }
     }
 }
