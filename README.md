@@ -1,5 +1,8 @@
 # Mods para City Skylines
 
+![pedro-lastra-Nyvq2juw4_o-unsplash](https://github.com/City-Skylines-Modding/City-Skylines-Mod/assets/75867326/c43dc6a6-59bd-4944-a886-f758e3f7b342)
+
+
 Este repositorio contiene la documentación de cómo jugar City Skylines, los requisitos
 de hardware necesarios para tener la mejor experiencia, los tipos de mods que se
 pueden desarrollar para el juego, como crear cada tipo de mod, como configurar
