@@ -45,6 +45,25 @@ Thank you for your interest in contributing to City Skylines Mods by Tec de Mont
 15. Ensure your changes are not overly complicated.
 16. Ensure your changes are not overly clever.
 
+### Readme
+
+#### Main Readme
+
+If you want to add a new mod to the main readme, you must add the following information:
+
+- Mod Name
+- Description
+- Author
+- Status
+
+The available statuses are:
+
+- Research
+- In Progress
+- Bug Fixes
+- Completed
+- Deployed
+
 ### Bug Reports
 
 1. Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/City-Skylines-Modding/City-Skylines-Mod/issues)
