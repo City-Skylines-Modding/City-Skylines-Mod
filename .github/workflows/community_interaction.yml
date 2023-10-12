@@ -1,0 +1,14 @@
+# .github/workflows/community_interaction.yml
+name: First Interaction
+on:
+  issues:
+    types: [opened]
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on newly opened issues
+        uses: actions/first-interaction@main
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          issue-message: "Thank you for raising an issue. We will get back to you soon!"

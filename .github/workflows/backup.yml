@@ -1,0 +1,12 @@
+# .github/workflows/backup_repo.yml
+name: Backup Repository
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backup repository
+        run: |
+          ghbackup --token ${{ secrets.GITHUB_TOKEN }} --organization City-Skylines-Modding

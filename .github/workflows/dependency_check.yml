@@ -1,0 +1,13 @@
+# .github/workflows/dependency_check.yml
+name: Dependabot Dependency Checking
+on:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight
+jobs:
+  check_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for outdated/vulnerable dependencies
+        uses: dependabot/dependabot-core@main
+        with:
+          update-strategy: "time-based"
