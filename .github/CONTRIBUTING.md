@@ -2,8 +2,7 @@
 
 ## Welcome
 
-Thank you for your interest in contributing to City Skylines Mods by Tec de Monterrey, campus Querétaro!
-We welcome all contributions, including bug fixes, new features, and documentation improvements.
+Thank you for your interest in contributing to City Skylines Mods by Tec de Monterrey, campus Querétaro! We welcome all contributions, including bug fixes, new features, and documentation improvements.
 
 ## Setting Up Your Development Environment
 
@@ -35,6 +34,16 @@ We welcome all contributions, including bug fixes, new features, and documentati
 4. Ensure your changes do not add unnecessary dependencies.
 5. Ensure your code is properly documented and commented.
 6. Update any relevant documentation to reflect your changes
+7. Ensure your changes do not introduce any security vulnerabilities.
+8. Ensure your changes are not unnecessarily complex.
+9. Ensure your changes do not duplicate existing code.
+10. Ensure your changes are not overly optimized.
+11. Ensure your changes are not overly generic.
+12. Ensure your changes are not overly opinionated.
+13. Ensure your changes are not overly coupled.
+14. Ensure your changes are not overly abstracted.
+15. Ensure your changes are not overly complicated.
+16. Ensure your changes are not overly clever.
 
 ### Bug Reports
 
