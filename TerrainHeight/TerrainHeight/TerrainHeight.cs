@@ -135,20 +135,36 @@ namespace TerrainHeight.Source
         }
 
         /**
-         * Handles the custom camera zoom. 
+         * Handles the custom camera zoom. Locks the zoom so that it is not affected by the camera's height.
          * @details Removes the camera's height from the zoom calculation so that
          *          it is not affected by the camera's height.  
          */
         private void CustomZoom()
         {
-            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-            Vector3 moveDirection = m_mainCamera.transform.forward;
+            float zoom = Input.GetAxis("Mouse ScrollWheel") * m_zoomSpeed;
+            if (zoom == 0) return;
 
-            moveDirection.y = 0;
+            Vector3 cameraPosition = m_mainCamera.transform.position;
+            Vector3 cameraForward = m_mainCamera.transform.forward;
 
-            m_mainCamera.transform.position -= moveDirection * scrollInput * m_zoomSpeed;
+            float cameraHeight = cameraPosition.y;
+
+            Vector3 zoomVector = cameraForward * zoom;
+            Vector3 newPosition = cameraPosition + zoomVector;
+
+            float newHeight = newPosition.y;
+            if (newHeight < 0) return;
+
+            float heightDifference = newHeight - cameraHeight;
+            if (heightDifference == 0) return;
+
+            float zoomFactor = heightDifference / zoom;
+
+            Vector3 finalZoomVector = zoomVector * zoomFactor;
+
+            m_mainCamera.transform.position = cameraPosition + finalZoomVector;
         }
-
+            
         /**
          * @brief
          * Updates the terrain height widget with the current terrain height. 
@@ -160,14 +176,18 @@ namespace TerrainHeight.Source
         {
             if (m_label == null) return;
 
-            float height = Mathf.Clamp
-                (TerrainManager.instance.SampleRawHeightSmoothWithWater(
-                 Camera.main.transform.position, true, 1000), 0, 1000);
+            Vector3 cameraPosition = Camera.main.transform.position;
+
+            float height = TerrainManager.instance.SampleRawHeightSmoothWithWater(cameraPosition, true, 0);
+
+            if (height > 1000) return;
+
+            height = Mathf.Clamp(height, 0, 1000);
 
             if (Mathf.Abs(height - lastHeight) > 0.000001f)
             {
-                m_label.text = "Terrain Height: " + height.ToString("F6") + " m";
                 lastHeight = height;
+                m_label.text = "Terrain Height: " + height.ToString("F6") + " m";
             }
         }
     }
