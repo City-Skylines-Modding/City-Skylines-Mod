@@ -162,7 +162,7 @@ namespace TerrainHeight.Source
 
             float height = Mathf.Clamp
                 (TerrainManager.instance.SampleRawHeightSmoothWithWater(
-                 Camera.main.transform.position, false, 1000), 0, 1000);
+                 Camera.main.transform.position, true, 1000), 0, 1000);
 
             if (Mathf.Abs(height - lastHeight) > 0.000001f)
             {

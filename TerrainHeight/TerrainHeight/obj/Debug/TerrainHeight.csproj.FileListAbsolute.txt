@@ -30,3 +30,13 @@ D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\Terrai
 D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\Mono.Security.dll
 D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\UnityEngine.dll
 D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\UnityEngine.UI.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\bin\Debug\TerrainHeight.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\bin\Debug\TerrainHeight.pdb
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\bin\Debug\PopsApiWrapper.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.csproj.AssemblyReference.cache
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.csproj.CoreCompileInputs.cache
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.csproj.CopyComplete
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.dll
+D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.pdb
