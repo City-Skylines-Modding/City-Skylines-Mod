@@ -16,3 +16,10 @@ C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPai
 C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.csproj.CopyComplete
 C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.dll
 C:\Users\carlo\Documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.pdb
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\bin\Debug\WaterPainting.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\bin\Debug\WaterPainting.pdb
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.csproj.AssemblyReference.cache
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.csproj.CoreCompileInputs.cache
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.csproj.CopyComplete
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\WaterPainting\WaterPainting\WaterPainting\obj\Debug\WaterPainting.pdb
