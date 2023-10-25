@@ -1,61 +1,53 @@
-﻿/**
-* @file TerrainHeight.cs
-* @brief Main class of the mod. Handles the logic
-* @author Carlos Salguero
-* @date 2023-08-28
-* @version 4.0.0
-* 
-* @copyright Copyright (c) - Tec de Monterrey
-*
-*/
-using ICities;
+﻿using ICities;
 using UnityEngine;
 using ColossalFramework.UI;
+using System.Reflection.Emit;
 
 namespace TerrainHeight.Source
 {
-    /**
-     * @class TerrainHeight
-     * @implements ThreadingExtensionBase
-     * @brief Main class of the mod. Handles the logic
-     */
+    /// <summary>
+    /// Shows the terrain height at the current camera position.
+    /// </summary>
     public class TerrainHeight : ThreadingExtensionBase
     {
-        private bool m_isUpdating = false;
-        private UILabel m_label = null;
+        private const float MIN_HEIGHT_ABOVE_TERRAIN = 10f;
+        private const float MAX_DISPLAYABLE_HEIGHT = 1000f;
+
+
+        private bool IsUpdating { get; set; } = false;
+        private UILabel Label { get; set; }
         private readonly float m_zoomSpeed = 20f;
-        private readonly Camera m_mainCamera;      // Cached camera reference
-        private float lastHeight = -1;    // Stored last value
+        private readonly Camera m_mainCamera;        // Cached camera reference
+        private float LastHeight { get; set; } = -1; // Stored last value
 
         // Constructor
-        /**
-         * Construct a new TerrainHeight object
-         */
+        /// <summary>
+        /// Default constructor for the class. 
+        /// Initializes the camera reference.
+        /// </summary>
         public TerrainHeight()
         {
             m_mainCamera = Camera.main;
         }
 
         // Methods
-        /**
-         * @brief 
-         * Disposes of the class's instance
-         */
+        /// <summary>
+        /// Disposes of the class's resources.
+        /// </summary>
         public void Dispose()
         {
-            if (m_label != null)
+            if (Label != null)
             {
-                Object.Destroy(m_label);
-                m_label = null;
+                Object.Destroy(Label);
+                Label = null;
             }
         }
 
-        /**
-         * @brief
-         * Called when the game updates itself.
-         * @parma realTimeDelta The time in seconds since the last update.
-         * @param simulationTimeDelta The time in seconds since the last simulation update.
-         */
+        /// <summary>
+        /// Called when the game updates itself.
+        /// <para><paramref name="realTimeDelta"/>: The time in seconds since the last update.</para>
+        /// <para><paramref name="simulationTimeDelta"/>: The time in seconds since the last simulation update.</para>
+        /// </summary>
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             CustomZoom();
@@ -64,16 +56,16 @@ namespace TerrainHeight.Source
                 && Input.GetKey(KeyCode.LeftControl) 
                 && Input.GetKey(KeyCode.LeftShift))
             {
-                m_isUpdating = !m_isUpdating;
+                IsUpdating = !IsUpdating;
 
-                if (m_isUpdating)
+                if (IsUpdating)
                     ShowTerrainHeight();
 
                 else
                     HideTerrainHeight();
             }
 
-            if (m_isUpdating)
+            if (IsUpdating)
                 UpdateTerrainHeight();
 
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
@@ -81,114 +73,122 @@ namespace TerrainHeight.Source
 
        
         // Private Methods
-        /**
-        * @brief 
-        * Shows the terrain height widget
-        */
+        /// <summary>
+        /// Shows the terrain height widget
+        /// </summary>
         private void ShowTerrainHeight()
         {
-            if (m_label == null)
+            if (Label == null)
                 CreateUIComponent();
 
-            m_label.isVisible = true;
+            Label.isVisible = true;
             UpdateTerrainHeight();
         }
 
-        /**
-         * @brief
-         * Hides the terrain height widget
-         */
+         /// <summary>
+         /// Hides the terrain height widget
+         /// </summary>
         private void HideTerrainHeight()
         {
-            if (m_label != null)
-                m_label.isVisible = false;
+            if (Label != null)
+                Label.isVisible = false;
 
-            m_isUpdating = false;
+            IsUpdating = false;
         }
 
-        /**
-         * @brief
-         * Creates the UI Component for the terrain height widget
-         */
+        /// <summary>
+        /// Creates the UI component for the terrain height widget
+        /// </summary>
         private void CreateUIComponent()
         {
             UIView view = UIView.GetAView();
-            m_label = view.AddUIComponent(typeof(UILabel)) as UILabel;
+            Label = view.AddUIComponent(typeof(UILabel)) as UILabel;
 
-            m_label.name = "TerrainHeightLabel";
-            m_label.relativePosition = new Vector3(60, 15);
-            m_label.textAlignment = UIHorizontalAlignment.Left;
-            m_label.verticalAlignment = UIVerticalAlignment.Middle;
+            Label.name = nameof(TerrainHeight) + "Label";
+            Label.relativePosition = new Vector3(60, 15);
+            Label.textAlignment = UIHorizontalAlignment.Left;
+            Label.verticalAlignment = UIVerticalAlignment.Middle;
 
-            m_label.textScale = 0.8f;
-            m_label.padding = new RectOffset(10, 10, 10, 10);
-            m_label.autoSize = true;
+            Label.textScale = 0.8f;
+            Label.padding = new RectOffset(10, 10, 10, 10);
+            Label.autoSize = true;
 
-            m_label.width = 200;
-            m_label.height = 30;
+            Label.width = 200;
+            Label.height = 30;
 
-            m_label.wordWrap = false;
-            m_label.backgroundSprite = "ButtonMenu";
+            Label.wordWrap = false;
+            Label.backgroundSprite = "ButtonMenu";
 
-            m_label.color = new Color32(255, 255, 255, 255);
-            m_label.opacity = 0.8f;
+            Label.color = new Color32(255, 255, 255, 255);
+            Label.opacity = 0.8f;
         }
 
-        /**
-         * Handles the custom camera zoom. Locks the zoom so that it is not affected by the camera's height.
-         * @details Removes the camera's height from the zoom calculation so that
-         *          it is not affected by the camera's height.  
-         */
+        /// <summary>
+        /// Adjusts the caemra's vertical position based on user input, 
+        /// ensuring consistent zoom speed regardless of the current zoom level.
+        /// </summary>
         private void CustomZoom()
         {
             float zoom = Input.GetAxis("Mouse ScrollWheel") * m_zoomSpeed;
             if (zoom == 0) return;
 
             Vector3 cameraPosition = m_mainCamera.transform.position;
-            Vector3 cameraForward = m_mainCamera.transform.forward;
+            Vector3 newPosition = new Vector3(cameraPosition.x, 
+                cameraPosition.y + zoom, cameraPosition.z);
 
-            float cameraHeight = cameraPosition.y;
+            Vector3 rayOrigin = m_mainCamera
+                .ScreenToWorldPoint(
+                    new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
 
-            Vector3 zoomVector = cameraForward * zoom;
-            Vector3 newPosition = cameraPosition + zoomVector;
+            Ray ray = new Ray(rayOrigin + Vector3.up * 5000f, Vector3.down);
+            RaycastHit hit;
+            int terrainLayerMask = 1 << 8;
 
-            float newHeight = newPosition.y;
-            if (newHeight < 0) return;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrainLayerMask))
+            {
+                float terrainHeight = hit.point.y;
 
-            float heightDifference = newHeight - cameraHeight;
-            if (heightDifference == 0) return;
+                if (newPosition.y < terrainHeight + MIN_HEIGHT_ABOVE_TERRAIN)
+                    newPosition.y = terrainHeight + MIN_HEIGHT_ABOVE_TERRAIN;
+            }
 
-            float zoomFactor = heightDifference / zoom;
-
-            Vector3 finalZoomVector = zoomVector * zoomFactor;
-
-            m_mainCamera.transform.position = cameraPosition + finalZoomVector;
+            m_mainCamera.transform.position = newPosition;
         }
-            
-        /**
-         * @brief
-         * Updates the terrain height widget with the current terrain height. 
-         * @details Sets a max height of 1000 meters so that the result of the 
-         *          height is accurate and is not affected by the camera's height.
-         * @details The height is rounded to 6 decimal places.
-         */
+
+        /// <summary>
+        /// Updates the displayed terrain height based on the camera's current position.
+        /// </summary>
         private void UpdateTerrainHeight()
         {
-            if (m_label == null) return;
+            if (Label == null) return;
 
-            Vector3 cameraPosition = Camera.main.transform.position;
+            // Store the original camera position and rotation
+            Vector3 originalPosition = m_mainCamera.transform.position;
+            Quaternion originalRotation = m_mainCamera.transform.rotation;
 
-            float height = TerrainManager.instance.SampleRawHeightSmoothWithWater(cameraPosition, true, 0);
+            // Temporarily set the camera to a top-down view
+            m_mainCamera.transform.position = new Vector3(originalPosition.x, 5000f, originalPosition.z); // A high altitude
+            m_mainCamera.transform.rotation = Quaternion.Euler(90f, 0f, 0f); // Directly looking down
 
-            if (height > 1000) return;
+            // Sample the height from this top-down perspective
+            Vector3 rayOrigin = m_mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
+            float height = TerrainManager.instance.SampleRawHeightSmoothWithWater(rayOrigin, true, 0);
 
-            height = Mathf.Clamp(height, 0, 1000);
+            // Revert the camera back to its original position and rotation
+            m_mainCamera.transform.position = originalPosition;
+            m_mainCamera.transform.rotation = originalRotation;
 
-            if (Mathf.Abs(height - lastHeight) > 0.000001f)
+            if (height > MAX_DISPLAYABLE_HEIGHT)
+                return;
+
+            height = Mathf.Clamp(height, 0, MAX_DISPLAYABLE_HEIGHT);
+
+            if (Mathf.Abs(height - LastHeight) > 0.000001f)
             {
-                lastHeight = height;
-                m_label.text = "Terrain Height: " + height.ToString("F6") + " m";
+                LastHeight = height;
+                Label.text = "Terrain Height: " + height.ToString("F6") + " m";
             }
         }
+
     }
 }
