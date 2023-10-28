@@ -13,7 +13,6 @@ namespace TerrainHeight.Source
         private const float MIN_HEIGHT_ABOVE_TERRAIN = 10f;
         private const float MAX_DISPLAYABLE_HEIGHT = 1000f;
 
-
         private bool IsUpdating { get; set; } = false;
         private UILabel Label { get; set; }
         private readonly float m_zoomSpeed = 20f;
