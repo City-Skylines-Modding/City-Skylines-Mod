@@ -157,24 +157,27 @@ namespace TerrainHeight.Source
 
         /// <summary>
         /// Updates the displayed terrain height based on the camera's current position.
+        /// Temporary sets the camera to a top-down view to sample the height. And samples
+        /// the height from the top-down view. Then reverts the camera back to its original
+        /// view
         /// </summary>
         private void UpdateTerrainHeight()
         {
             if (Label == null) return;
 
-            // Store the original camera position and rotation
             Vector3 originalPosition = m_mainCamera.transform.position;
             Quaternion originalRotation = m_mainCamera.transform.rotation;
 
-            // Temporarily set the camera to a top-down view
-            m_mainCamera.transform.position = new Vector3(originalPosition.x, 5000f, originalPosition.z); // A high altitude
-            m_mainCamera.transform.rotation = Quaternion.Euler(90f, 0f, 0f); // Directly looking down
+            m_mainCamera.transform.position = new Vector3(
+                originalPosition.x, 5000f, originalPosition.z); 
+            m_mainCamera.transform.rotation = Quaternion.Euler(90f, 0f, 0f); 
 
-            // Sample the height from this top-down perspective
-            Vector3 rayOrigin = m_mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
-            float height = TerrainManager.instance.SampleRawHeightSmoothWithWater(rayOrigin, true, 0);
+            Vector3 rayOrigin = m_mainCamera.ScreenToWorldPoint(
+                new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
 
-            // Revert the camera back to its original position and rotation
+            float height = TerrainManager.instance
+                .SampleRawHeightSmoothWithWater(rayOrigin, true, 0);
+
             m_mainCamera.transform.position = originalPosition;
             m_mainCamera.transform.rotation = originalRotation;
 
