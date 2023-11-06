@@ -1,7 +1,7 @@
 ﻿using ICities;
 using UnityEngine;
 using ColossalFramework.UI;
-using System.Reflection.Emit;
+using System.Collections.Generic;
 
 namespace TerrainHeight.Source
 {
@@ -16,8 +16,16 @@ namespace TerrainHeight.Source
         private bool IsUpdating { get; set; } = false;
         private UILabel Label { get; set; }
         private readonly float m_zoomSpeed = 20f;
-        private readonly Camera m_mainCamera;        // Cached camera reference
-        private float LastHeight { get; set; } = -1; // Stored last value
+        private static readonly List<UILabel> uILabels = new List<UILabel>();
+        private readonly List<UILabel> savedLabels = uILabels;
+        private Vector3 fixedRayOrigin;
+
+        // Cached camera reference
+        private readonly Camera m_mainCamera;
+
+        // Stored last value
+        private float LastHeight { get; set; } = -1; 
+
 
         // Constructor
         /// <summary>
@@ -44,9 +52,9 @@ namespace TerrainHeight.Source
 
         /// <summary>
         /// Called when the game updates itself.
+        /// </summary>
         /// <para><paramref name="realTimeDelta"/>: The time in seconds since the last update.</para>
         /// <para><paramref name="simulationTimeDelta"/>: The time in seconds since the last simulation update.</para>
-        /// </summary>
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             CustomZoom();
@@ -58,19 +66,24 @@ namespace TerrainHeight.Source
                 IsUpdating = !IsUpdating;
 
                 if (IsUpdating)
+                {
                     ShowTerrainHeight();
+                    InitializedFixedRayOrigin();
+                }
 
                 else
                     HideTerrainHeight();
             }
 
             if (IsUpdating)
+            {
                 UpdateTerrainHeight();
+                InitializedFixedRayOrigin();
+            }
 
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
         }
 
-       
         // Private Methods
         /// <summary>
         /// Shows the terrain height widget
@@ -140,10 +153,9 @@ namespace TerrainHeight.Source
                     new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
 
             Ray ray = new Ray(rayOrigin + Vector3.up * 5000f, Vector3.down);
-            RaycastHit hit;
             int terrainLayerMask = 1 << 8;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrainLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, terrainLayerMask))
             {
                 float terrainHeight = hit.point.y;
 
@@ -155,30 +167,76 @@ namespace TerrainHeight.Source
         }
 
         /// <summary>
-        /// Updates the displayed terrain height based on the camera's current position.
-        /// Temporary sets the camera to a top-down view to sample the height. And samples
-        /// the height from the top-down view. Then reverts the camera back to its original
-        /// view
+        /// Creates a pin label at the specified position with the specified height
         /// </summary>
+        /// <para><paramref name="position"/>: The position of the label.</para>
+        /// <para><paramref name="height"/>: The height to be set in the label</para>
+        /// <returns>The Label</returns>
+        private UILabel CreatePinLabel(Vector3 position, float height)
+        {
+            UIView view = UIView.GetAView();
+            UILabel label = view.AddUIComponent(typeof(UILabel)) as UILabel;
+
+            label.name = nameof(TerrainHeight) + "Label";
+            label.textAlignment = UIHorizontalAlignment.Left;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
+
+            label.textScale = 0.8f;
+            label.padding = new RectOffset(10, 10, 10, 10);
+            label.autoSize = true;
+
+            label.width = 200;
+            label.height = 30;
+
+            label.wordWrap = false;
+            label.backgroundSprite = "ButtonMenu";
+
+            label.color = new Color32(255, 255, 255, 255);
+            label.opacity = 0.8f;
+
+            // Set the label's position in the real world position
+            label.relativePosition = position;
+
+            label.text = $"Terrain Height: {height:F6} m";
+            return label;
+        }
+
+        /// <summary>
+        /// Initializes the fixed ray origin based on the current viewport's center.
+        /// This fixed point is used to consistently sample terrain height regardless 
+        /// of camera movement or zoom. The world space is scaled to match the game's 
+        /// representation, where each "cell" unit correlates to 8x8 meters.
+        /// </summary>
+        /// <remarks>
+        /// See https://skylines.paradoxwikis.com/Maps for more details on the game's scaling.
+        /// </remarks>
+        private void InitializedFixedRayOrigin()
+        {
+            Vector3 screenMidPoint = new Vector3(0.5f, 0.5f, m_mainCamera.nearClipPlane);
+            fixedRayOrigin = m_mainCamera.ViewportToWorldPoint(screenMidPoint);
+
+            fixedRayOrigin.x *= 8;
+            fixedRayOrigin.z *= 8;
+        }
+
+        /// <summary>
+        /// Updates the terrain height label based on the fixed ray origin.
+        /// If the left mouse button is clicked, a pin label is created at the mouse
+        /// position to mark the terrain height at that point.The terrain height is clamped
+        /// to a maximum displayable height and updated only if it has changed significantly
+        /// since the last update.
+        /// </summary>
+        /// <remarks>
+        /// The fixed ray origin should be initialized before calling this method to ensure 
+        /// accurate height sampling. The method accounts for the game's scaling factor,
+        /// where each "cell" unit correlates to 8x8 meters.
+        /// </remarks>
         private void UpdateTerrainHeight()
         {
-            if (Label == null) return;
-
-            Vector3 originalPosition = m_mainCamera.transform.position;
-            Quaternion originalRotation = m_mainCamera.transform.rotation;
-
-            m_mainCamera.transform.position = new Vector3(
-                originalPosition.x, 5000f, originalPosition.z); 
-            m_mainCamera.transform.rotation = Quaternion.Euler(90f, 0f, 0f); 
-
-            Vector3 rayOrigin = m_mainCamera.ScreenToWorldPoint(
-                new Vector3(Screen.width / 2, Screen.height / 2, m_mainCamera.nearClipPlane));
+            if (Label == null || TerrainManager.instance == null) return;
 
             float height = TerrainManager.instance
-                .SampleRawHeightSmoothWithWater(rayOrigin, true, 0);
-
-            m_mainCamera.transform.position = originalPosition;
-            m_mainCamera.transform.rotation = originalRotation;
+                .SampleRawHeightSmoothWithWater(fixedRayOrigin, true, 0);
 
             if (height > MAX_DISPLAYABLE_HEIGHT)
                 return;
@@ -188,9 +246,23 @@ namespace TerrainHeight.Source
             if (Mathf.Abs(height - LastHeight) > 0.000001f)
             {
                 LastHeight = height;
-                Label.text = "Terrain Height: " + height.ToString("F6") + " m";
+                Label.text = $"Terrain Height: {height:F6} m";
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 mousePosition = new Vector3(
+                    Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+
+                // Sets the pin in a fixed world position
+                Vector3 worldPosition = m_mainCamera.ScreenToWorldPoint(mousePosition);
+
+                worldPosition.x *= 8;
+                worldPosition.z *= 8;
+
+                UILabel label = CreatePinLabel(mousePosition, height);
+                savedLabels.Add(label);
             }
         }
-
     }
 }

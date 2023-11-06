@@ -34,3 +34,9 @@ D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\D
 D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.csproj.CopyComplete
 D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.dll
 D:\documents\Tec de Monterrey\Servicio Becario\TerrainHeight\TerrainHeight\obj\Debug\TerrainHeight.pdb
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\Assembly-CSharp.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\ColossalManaged.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\ICities.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\Mono.Security.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\UnityEngine.dll
+D:\documents\Tec de Monterrey\Servicio Becario\CitySkylines\TerrainHeight\TerrainHeight\bin\Debug\UnityEngine.UI.dll
